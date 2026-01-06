@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">IFF You Really See Eurydice</string>
+    <string name="string_space"> </string>
+    <string name="welcome">Welcome to IFF You Really See Eurydice!</string>
+    <string name="title_why">(Why THAT name? Click this.)</string>
+    <string name="explanation">This is an application designed for object hackers to use to convert 1.0 version Sims 1 .iff files from the game's prototypes into 2.0 .iff files usable for porting that can be opened and modified in traditional Sims 1 hacking programs like IffPencil, IffSnooper, etc.</string>
+    <string name="input_instruction">First you'll need to select the prototype file for conversion. (If it has a separate .spf then you will need to repeat this process for both files (and, optionally, use another tool to combine them into a single .iff) to have a fully working object.)</string>
+    <string name="input_button">Select 1.0 iff or spf file</string>
+    <string name="input_file">Selected file: %1$s</string>
+    <string name="no_file">No file selected</string>
+    <string name="input_success">Looks like a 1.0 iff! You're good to go!</string>
+    <string name="input_error">This is not a 1.0 iff! Make sure you have selected a 1.0 version iff!</string>
+    <string name="input_resources">This file contains the following resources (make sure these seem to be Sims 1 iff resource names!):</string>
+    <string name="input_note">(NAME resources contain labels for other resources and will be excluded from the export. XXXX resources will come along but appear to be ignored by the game and tend to contain garbage, and some hacking programs automatically remove them when saving.)</string>
+    <string name="output_instruction">Everything look good? Go ahead and pick a file to create/convert to!</string>
+    <string name="output_button">Pick folder and filename to create new 2.0 iff</string>
+    <string name="output_file">%1$s</string>
+    <string name="output_done">Conversion done! Enjoy your new file at %1$s! (If what you converted was an .spf you will need to either change its file extension yourself or combine it with your .iff in another program (for example, by importing it in IffPencil).</string>
+</resources>
