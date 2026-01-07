@@ -77,6 +77,7 @@ Enjoy
 - [SimsTek Wiki](https://simstek.fandom.com/wiki/IFF) as well as the older [*The Sims*™ Technical Aspects](https://web.archive.org/web/20220410061934/http://simtech.sourceforge.net/tech/iff.html) (dead, Wayback link) were valuable resources for me to gain enough understanding of the underlying format of iff hexadecimal to be able to understand what was needed for conversion
 - [TS1 - Maxis Beta Conversions Project (+Sprites!)](https://modthesims.info/showthread.php?t=686236) thread at Mod the Sims, for getting me to finally start successfully object hacking, and because it's where I've discussed some of my discoveries doing this kind of thing, as I started looking more and more into the hex code
 - The [FreeSO](https://freeso.org/) Discord server, because I sort of "liveblogged"/rubber ducked a few issues I was having in its Sims 1 channel, trying to figure out why various sprite things (weird layering, crashing with SPR#) were happening so it was a help in me figuring out enough to not give up
+- [TheSims.css](https://github.com/inbn/TheSims.css) for providing a reference for how Sims-like styling could be achieved, even though CSS is not Kotlin/Compose
 
 ## Getting this running inside an IDE like IntelliJ IDEA, for developers
 
