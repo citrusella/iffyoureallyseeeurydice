@@ -15,7 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withLink
+import iffyoureallyseeeurydice.composeapp.generated.resources.ComicNeue_Bold
+import iffyoureallyseeeurydice.composeapp.generated.resources.ComicNeue_Regular
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 import iffyoureallyseeeurydice.composeapp.generated.resources.Res
@@ -48,6 +52,7 @@ import io.github.vinceglb.filekit.sink
 import io.github.vinceglb.filekit.write
 import kotlinx.coroutines.launch
 import kotlinx.io.buffered
+import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -94,7 +99,10 @@ fun App() {
                 .verticalScroll(rememberScrollState()), // scroll if too big for window, unsure how to implement scrollbar right now but the scrolling itself works
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
+            val comicSans = FontFamily(
+                Font(Res.font.ComicNeue_Bold, FontWeight.Bold),
+                Font(Res.font.ComicNeue_Regular, FontWeight.Normal)
+            )
             Text(
                 buildAnnotatedString {
                     append(stringResource(Res.string.welcome)) // Welcome to IFF You...
@@ -108,7 +116,9 @@ fun App() {
                     }
                     append(stringResource(Res.string.string_space)) // Space so English sentences are properly spaced
                     append(stringResource(Res.string.explanation)) // Short explanation of what this program is good for, longer in readme
-                }
+                },
+                style = MaterialTheme.typography.bodyMedium, // currently only gets font size and probably weight
+                fontFamily = comicSans // put in the funny font
             )
             Text(stringResource(Res.string.input_instruction)) // First you'll need...
             Button(onClick = { inputFile.launch() }) {

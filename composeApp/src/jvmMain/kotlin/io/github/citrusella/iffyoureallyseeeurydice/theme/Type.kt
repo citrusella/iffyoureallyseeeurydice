@@ -1,9 +1,8 @@
 package io.github.citrusella.iffyoureallyseeeurydice.theme
 
-import androidx.compose.material.Typography
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -21,22 +20,10 @@ fun AppTypography(): Typography {
         Font(Res.font.ComicNeue_Regular, FontWeight.Normal)
     )
     return Typography(
-        body1 = TextStyle(
+        bodyMedium = TextStyle(
             fontFamily = comicSans,
             fontWeight = FontWeight.Normal,
-            fontSize = 12.sp
-        ),
-        h1 = TODO(),
-        h2 = TODO(),
-        h3 = TODO(),
-        h4 = TODO(),
-        h5 = TODO(),
-        h6 = TODO(),
-        subtitle1 = TODO(),
-        subtitle2 = TODO(),
-        body2 = TODO(),
-        button = TODO(),
-        caption = TODO(),
-        overline = TODO()
+            fontSize = 13.sp
+        )
     )
 }
