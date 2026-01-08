@@ -44,6 +44,16 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
             packageName = "io.github.citrusella.iffyoureallyseeeurydice"
             packageVersion = "1.0.0"
+
+            windows {
+                iconFile.set(File("icons/eurydice icon.ico"))
+            }
+            linux {
+                iconFile.set(File("icons/eurydice icon.png"))
+            }
+            macOS {
+                iconFile.set(File("icons/eurydice icon.icns"))
+            }
         }
     }
 }
