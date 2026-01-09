@@ -1,6 +1,7 @@
 # IFF You Really See Eurydice
 
-LICENSE ICONS HERE AND SUCH
+LICENSE ICONS HERE AND SUCH ![Licensed GPL-3.0](https://img.shields.io/github/license/citrusella/iffyoureallyseeeurydice)
+
 
 UNFINISHED. REPOSITORY SHOULD NOT YET BE PUBLIC.
 
