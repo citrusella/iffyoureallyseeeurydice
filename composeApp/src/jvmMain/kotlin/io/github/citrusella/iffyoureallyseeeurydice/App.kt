@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -15,11 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withLink
-import iffyoureallyseeeurydice.composeapp.generated.resources.ComicNeue_Bold
-import iffyoureallyseeeurydice.composeapp.generated.resources.ComicNeue_Regular
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 import iffyoureallyseeeurydice.composeapp.generated.resources.Res
@@ -38,6 +35,7 @@ import iffyoureallyseeeurydice.composeapp.generated.resources.output_instruction
 import iffyoureallyseeeurydice.composeapp.generated.resources.string_space
 import iffyoureallyseeeurydice.composeapp.generated.resources.title_why
 import iffyoureallyseeeurydice.composeapp.generated.resources.welcome
+import io.github.citrusella.iffyoureallyseeeurydice.theme.Theme
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.dialogs.FileKitMode
@@ -52,13 +50,12 @@ import io.github.vinceglb.filekit.sink
 import io.github.vinceglb.filekit.write
 import kotlinx.coroutines.launch
 import kotlinx.io.buffered
-import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
+    Theme {
         var showComplete by remember { mutableStateOf(false) }
         var validation by remember { mutableStateOf("none")}
         var inputPF by remember { mutableStateOf<PlatformFile?>(null) }
@@ -93,16 +90,12 @@ fun App() {
         }
         Column(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.primaryContainer)
+                .background(MaterialTheme.colorScheme.background)
                 .safeContentPadding()
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()), // scroll if too big for window, unsure how to implement scrollbar right now but the scrolling itself works
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            val comicSans = FontFamily(
-                Font(Res.font.ComicNeue_Bold, FontWeight.Bold),
-                Font(Res.font.ComicNeue_Regular, FontWeight.Normal)
-            )
             Text(
                 buildAnnotatedString {
                     append(stringResource(Res.string.welcome)) // Welcome to IFF You...
@@ -117,12 +110,25 @@ fun App() {
                     append(stringResource(Res.string.string_space)) // Space so English sentences are properly spaced
                     append(stringResource(Res.string.explanation)) // Short explanation of what this program is good for, longer in readme
                 },
-                style = MaterialTheme.typography.bodyMedium, // currently only gets font size and probably weight
-                fontFamily = comicSans // put in the funny font
+                style = MaterialTheme.typography.bodyMedium, // font
+                color = MaterialTheme.colorScheme.onPrimary
             )
-            Text(stringResource(Res.string.input_instruction)) // First you'll need...
-            Button(onClick = { inputFile.launch() }) {
-                Text(stringResource(Res.string.input_button)) //Select 1.0 iff
+            Text(stringResource(Res.string.input_instruction),
+                style = MaterialTheme.typography.bodyMedium, // font
+                color = MaterialTheme.colorScheme.onPrimary) // First you'll need...
+            Button(
+                onClick = { inputFile.launch() },
+                enabled = false,
+                shape = MaterialTheme.shapes.medium,
+                colors = ButtonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary,
+                    disabledContainerColor = MaterialTheme.colorScheme.tertiary,
+                    disabledContentColor = MaterialTheme.colorScheme.onTertiary
+                )
+            ) {
+                Text(stringResource(Res.string.input_button),
+                    style = MaterialTheme.typography.bodyMedium) //Select 1.0 iff
             }
             if (inputPF != null) {
                 Text(stringResource(Res.string.input_file, inputPF!!.name)) // Selected file: iffName.iff
