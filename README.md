@@ -23,14 +23,8 @@ All you need to do is open the program, select your 1.0 iff, verify it seems to 
 
 ### What this project *does not do*:
 
-- Automatically make a prototype iff work correctly in the final game. **That's still up to you.** It's just for making the files readable/editable in existing tools that can handle 2.0 iff files. Nearly all prototype objects need *some* sort of edit to work in an expected manner in the final game, even if it's just replacing an animation or sound or changing its GUID so that it does not conflict with an existing Maxis object (a lot of prototype objects use GUIDs that were later used by more polished versions of the objects).
-  - Of note: Some objects need very minimal edits to work. Others (like floors or houses, for example) may require extensive reworking in order to run properly in the game or may never work using this method.
-- Make an editor properly read and understand a version of a resource in the iff that it is not completely equipped to understand. For example, Iff Pencil 2 chugs along with most versions of most resources that could make their way into an iff converted this way (and can sometimes (OBJD, TTAB maybe) at least partially upgrade them to a newer version by opening and saving them), but:
-  - Prototype TTABs will at least sometimes not appear at all in Volcanic.
-  - Those same TTABs will fully crash Script Station.
-  - Most editors are not equipped to edit prototype catalog resources (CATS), or at least not equipped to edit them in a nice pretty GUI. Transmogrifier can do so but will convert it to a CTSS like the final game uses.
-  - Iff Pencil 2 does not recognize SPR# resources in the DGRP viewer/editor but the SPR# will work in-game
-  - It is possible for an object that uses SPR# instead of SPR2 to crash some tools that can display it, like T-mog or Sim Explorer, but generally if an object does this, it will *also* crash the game itself. 
+- Automatically make a prototype iff work correctly in the final game. **That's still up to you.** It's just for making the files readable/editable in existing tools that can handle 2.0 iff files. Nearly all prototype objects need *some* sort of edit to work in an expected manner in the final game. (Common ways resources may be incompatible are discussed further down in the readme.)
+- Make an editor properly read and understand a version of a resource in the iff that it is not completely equipped to understand. For example, Iff Pencil 2 chugs along with most versions of most resources that could make their way into an iff converted this way. (It can even sometimes (OBJD, TTAB maybe) at least partially upgrade them to a newer version by opening and saving them as well.) On the other hand, prototype TTABs will at least sometimes not appear at all in Volcanic, and those same TTABs will fully crash Script Station. This is just one example, though. (Again, some are discussed further down in the readme.)
 - Convert to version 2.5. I just didn't want to worry about handling the rsmp resource 2.5 supports. (Iff Pencil 2 (and maybe other editors) may automatically adjust a 2.0 iff into a 2.5 iff upon saving them, though.)
 - Convert a 2.0 or 2.5 to a 1.0. It's not for that.
 - Protect you from accidentally overwriting another iff, beyond what your operating system's default file manager will do. (So just be careful. There were a couple times during testing I nearly overwrote a 1.0 iff because I didn't think about which step of the process I was in.)
@@ -54,12 +48,26 @@ Select a destination folder and file name with the second button. This will writ
 
 (txt readme that comes with exe will list common changes that often need to be made to files to get them to work right)
 
+#### Common incompatibilities between prototype objects and the final game
+
+This is **not** an exhaustive list.
+
+- Prototype animations never work because they do not exist in the final game (and were designed with a different "skeleton" in mind so they wouldn't work anyway). These always need to be replaced with a new animation/equivalent final game animation.
+- Sounds will not work as written. Prototype sounds can be ported as well, or the sound can be replaced with an existing sound in the game.
+- OBJDs are version 136 rather than 138. They must be upgraded to version 138. There may be more than one way to properly upgrade it.
+- TTABs are an old version and need to be upgraded. There may be more than one way to do this.
+- GUIDs have a *high likelihood* of conflicting with later Maxis objects, because many base game and even in some cases EP objects are more polished revisions of these prototype objects. Clone it or something--and make sure you have a magic cookie if you intend to share!--unless your intent is to create a default replacement for some reason.
+- Most editors are not equipped to edit prototype catalog resources (CATS), or at least they are not equipped to edit them in a nice pretty GUI. Transmogrifier can do so but in so doing will convert it to a CTSS like the final game uses. (This may be desired if you want a translatable catalog name and description and is an easy enough conversion to do manually if you don't want T-mog to do it.)
+- Iff Pencil 2 does not recognize SPR# resources in the DGRP viewer/editor (even ones in some Maxis-provided final game objects like the pedestrian portal), but the SPR# will work in-game.
+- It is possible for an object that uses SPR# instead of SPR2 to crash some tools that can display it, like T-mog or Sim Explorer. Generally if an object does this, it will *also* crash the game itself, if the game tries to load it. (This is also *usually* due to an incorrect flag in the chunk header, which this tool shouldn't be capable of messing up.)
+- Of note: Some objects need very minimal edits to work. Others (like floors or houses, for example) may require extensive reworking in order to run properly in the game or may never work using this method.
+
 ### To do/known issues
 
 - The application does not release files it just created for other programs to be allowed to open and edit them. (This might only be happening on Windows, but I'm not sure.) I'm looking into why this is, but for now you can unlock the file by closing IFF You Really See Eurydice or by starting a new conversion (even if you don't finish it or select a valid 1.0 file).
 - The application always uses an iff file ending, even if the imported file was another type of file. This does not matter in regard to producing a valid file, but I wanted to provide the user with a choice and am currently not doing so. It *appears* that I cannot change the file endings offered to the user to save as without allowing *every* file ending, at least not with the existing file read/write/pick library I'm using. I'm still looking into it, but if you want to leave the iff and spf (or stx if that ever becomes relevant) separate then you'll need to fix the file endings yourself. (If you intend to combine them, you actually have a leg up: Iff Pencil 2's import function (one easy way to combine the two) only allows imports of files that have iff endings.)
 - The window can scroll if the content grows too tall for the window, but it is currently not showing a scroll bar to indicate this, even though scrolling still works.
-- NAME chunk (1.0 iff label format) handling was implemented in a shortcut sort of way. I don't anticipate this being a problem for the vast majority of objects, but if you find you get a file with *several* unexpected "not found" labels, please file an issue for me to look into it and determine if this shortcut caused it and how best to implement a new way of handling.
+- NAME chunk (1.0 iff label format) handling was implemented in a shortcut sort of way. I don't anticipate this being a problem for the vast majority of objects, because most objects only have one NAME chunk, or the NAME with all the info is the last one in the file.  However, if you find you get a file with *several* unexpected "not found" labels, please file an issue for me to look into it. That way, I can determine if this shortcut caused it and how best to implement a new way of handling, if needed.
 
 ### About the author
 
