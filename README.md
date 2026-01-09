@@ -80,7 +80,7 @@ Sometime in late 2025, after learning my way around how a 1.0 iff is structured 
 
 I coded this in Kotlin Multiplatform because I was already familiar with Kotlin as a programming language (though a lot of the Compose aspects of this project were new to me). This isn't the first application I've coded to some state of completion, but it *is* the first I've managed to release!
 
-Enjoy
+Enjoy!
 
 ### Acknowledgements
 
