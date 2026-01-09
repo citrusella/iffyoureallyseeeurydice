@@ -61,6 +61,7 @@ fun App() {
         var inputPF by remember { mutableStateOf<PlatformFile?>(null) }
         val chunkList by remember { mutableStateOf(mutableListOf<String>()) }
         var completeChunks by remember { mutableStateOf(mutableListOf<String>())}
+        var chunkCounts by remember { mutableStateOf(mapOf<String, Int>()) }
         var outputFileName by remember { mutableStateOf("none")}
         val coroutineScope = rememberCoroutineScope()
         //1.0 header for checking against input file to see if it's a 1.0 iff
@@ -184,13 +185,14 @@ fun App() {
                         }
                     }
                     completeChunks = chunkList // chunk list kept showing as empty in string, this fixes it, may be unneeded
+                    chunkCounts = completeChunks.groupingBy { it }.eachCount()
                 }
             }
             if (completeChunks.isNotEmpty() && validation != "error") { // if it has chunks and is 1.0 iff
                 Text(stringResource(Res.string.input_resources),
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.onPrimary) // Prefix for list
-                Text(completeChunks.toString(),
+                Text(chunkCounts.toString(),
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.onPrimary) // list
                 Text(stringResource(Res.string.input_note),
