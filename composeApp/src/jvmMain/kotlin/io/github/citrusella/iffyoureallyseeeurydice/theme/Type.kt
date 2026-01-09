@@ -23,7 +23,7 @@ fun AppTypography(): Typography {
         bodyMedium = TextStyle(
             fontFamily = comicSans,
             fontWeight = FontWeight.Normal,
-            fontSize = 13.sp
+            fontSize = 15.sp
         )
     )
 }

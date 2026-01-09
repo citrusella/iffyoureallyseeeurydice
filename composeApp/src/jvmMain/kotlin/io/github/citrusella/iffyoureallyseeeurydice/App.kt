@@ -13,9 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withLink
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -113,12 +113,11 @@ fun App() {
                 style = MaterialTheme.typography.bodyMedium, // font
                 color = MaterialTheme.colorScheme.onPrimary
             )
-            Text(stringResource(Res.string.input_instruction),
+            Text(stringResource(Res.string.input_instruction),// First you'll need...
                 style = MaterialTheme.typography.bodyMedium, // font
-                color = MaterialTheme.colorScheme.onPrimary) // First you'll need...
+                color = MaterialTheme.colorScheme.onPrimary) // off-white text
             Button(
                 onClick = { inputFile.launch() },
-                enabled = false,
                 shape = MaterialTheme.shapes.medium,
                 colors = ButtonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
@@ -131,7 +130,9 @@ fun App() {
                     style = MaterialTheme.typography.bodyMedium) //Select 1.0 iff
             }
             if (inputPF != null) {
-                Text(stringResource(Res.string.input_file, inputPF!!.name)) // Selected file: iffName.iff
+                Text(stringResource(Res.string.input_file, inputPF!!.name),// Selected file: iffName.iff
+                    style = MaterialTheme.typography.bodyMedium, // font
+                    color = MaterialTheme.colorScheme.onPrimary) // off-white text
                 coroutineScope.launch {
                     val inputBytes = inputPF!!.readBytes() // Get byte array of entire file
                     val inputHex = inputBytes.toHexString() // Convert to hex string because my existing code was built to work with hex strings lol
@@ -143,12 +144,19 @@ fun App() {
                     }
                 }
             } else {
-                Text(stringResource(Res.string.no_file)) // No file selected
+                Text(stringResource(Res.string.no_file),//No file selected
+                    style = MaterialTheme.typography.bodyMedium, // font
+                    color = MaterialTheme.colorScheme.onPrimary) // off-white text
             }
             if (validation == "success") {
-                Text(stringResource(Res.string.input_success)) // Looks like a 1.0 iff!
+                Text(stringResource(Res.string.input_success),
+                    style = MaterialTheme.typography.bodyMedium, // font
+                    color = MaterialTheme.colorScheme.onPrimary) // Looks like a 1.0 iff!
             } else if (validation == "error") {
-                Text(stringResource(Res.string.input_error), color = Color.Red) // No it doesn't
+                Text(stringResource(Res.string.input_error),
+                    style = MaterialTheme.typography.bodyMedium, // font
+                    color = MaterialTheme.colorScheme.error,
+                    fontWeight = FontWeight.Bold) // No it doesn't
             }
             if (inputPF != null) {
                 coroutineScope.launch {
@@ -179,11 +187,23 @@ fun App() {
                 }
             }
             if (completeChunks.isNotEmpty() && validation != "error") { // if it has chunks and is 1.0 iff
-                Text(stringResource(Res.string.input_resources)) // Prefix for list
-                Text(completeChunks.toString()) // list
-                Text(stringResource(Res.string.input_note)) // note about NAME and XXXX
+                Text(stringResource(Res.string.input_resources),
+                    style = MaterialTheme.typography.bodyMedium, // font
+                    color = MaterialTheme.colorScheme.onPrimary) // Prefix for list
+                Text(completeChunks.toString(),
+                    style = MaterialTheme.typography.bodyMedium, // font
+                    color = MaterialTheme.colorScheme.onPrimary) // list
+                Text(stringResource(Res.string.input_note),
+                    style = MaterialTheme.typography.bodyMedium, // font
+                    color = MaterialTheme.colorScheme.onPrimary) // note about NAME and XXXX
             }
-            Text(stringResource(Res.string.output_instruction)) // Everything look good?
+            if (validation == "success") {
+                Text(
+                    stringResource(Res.string.output_instruction),
+                    style = MaterialTheme.typography.bodyMedium, // font
+                    color = MaterialTheme.colorScheme.onPrimary
+                ) // Everything look good?
+            }
             val outputFile = rememberFileSaverLauncher { file ->
                 if (file != null) {
                     if (inputPF != null) {
@@ -316,11 +336,21 @@ fun App() {
             Button(onClick = { outputFile.launch(suggestedName = "converted prototype file",
                 extension = "iff", //TODO: Figure out if FileKit can allow for multiple extension choices but still limited
                 directory = userDir) },
-                enabled = validation == "success") { //Only work if input file is a 1.0 iff
-                Text(stringResource(Res.string.output_button)) //Pick folder and
+                enabled = validation == "success",//Only work if input file is a 1.0 iff
+                shape = MaterialTheme.shapes.medium,
+                colors = ButtonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary,
+                    disabledContainerColor = MaterialTheme.colorScheme.tertiary,
+                    disabledContentColor = MaterialTheme.colorScheme.onTertiary)
+            ) {
+                Text(stringResource(Res.string.output_button), //Pick file and save
+                    style = MaterialTheme.typography.bodyMedium) // font
             }
             if(showComplete) {
-                Text(stringResource(Res.string.output_done,outputFileName)) //Conversion done!
+                Text(stringResource(Res.string.output_done,outputFileName),
+                    style = MaterialTheme.typography.bodyMedium, // font
+                    color = MaterialTheme.colorScheme.onPrimary) //Conversion done!
             }
         }
     }
