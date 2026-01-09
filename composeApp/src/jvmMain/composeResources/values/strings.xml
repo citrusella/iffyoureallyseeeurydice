@@ -10,7 +10,7 @@
     <string name="no_file">No file selected</string>
     <string name="input_success">Looks like a 1.0 iff! You're good to go!</string>
     <string name="input_error">This is not a 1.0 iff! Make sure you have selected a 1.0 version iff!</string>
-    <string name="input_resources">This file contains the following resources (resource type=amount, make sure these seem to be Sims 1 iff resource names!):</string>
+    <string name="input_resources">This file contains the following resources (type=amount, make sure these seem to be Sims 1 iff resource names!):</string>
     <string name="input_note">(NAME resources contain labels for other resources and will be excluded from the export. XXXX resources will come along but appear to be ignored by the game and tend to contain garbage, and some hacking programs automatically remove them when saving.)</string>
     <string name="output_instruction">Everything look good? Go ahead and pick a file to create/convert to!</string>
     <string name="output_button">Pick folder and filename to create new 2.0 iff</string>
