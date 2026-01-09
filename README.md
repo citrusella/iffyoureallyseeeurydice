@@ -56,9 +56,8 @@ Select a destination folder and file name with the second button. This will writ
 
 ### To do/known issues
 
-- The application does not release files it just created for other programs to be allowed to open and edit them. I'm looking into why this is, but for now you can unlock the file by closing IFF You Really See Eurydice or by starting a new conversion (even if you don't finish it or select a valid 1.0 file).
+- The application does not release files it just created for other programs to be allowed to open and edit them. (This might only be happening on Windows, but I'm not sure.) I'm looking into why this is, but for now you can unlock the file by closing IFF You Really See Eurydice or by starting a new conversion (even if you don't finish it or select a valid 1.0 file).
 - The application always uses an iff file ending, even if the imported file was another type of file. This does not matter in regard to producing a valid file, but I wanted to provide the user with a choice and am currently not doing so. It *appears* that I cannot change the file endings offered to the user to save as without allowing *every* file ending, at least not with the existing file read/write/pick library I'm using. I'm still looking into it, but if you want to leave the iff and spf (or stx if that ever becomes relevant) separate then you'll need to fix the file endings yourself. (If you intend to combine them, you actually have a leg up: Iff Pencil 2's import function (one easy way to combine the two) only allows imports of files that have iff endings.)
-- It's ugly. I'm working on it.
 - The window can scroll if the content grows too tall for the window, but it is currently not showing a scroll bar to indicate this, even though scrolling still works.
 - NAME chunk (1.0 iff label format) handling was implemented in a shortcut sort of way. I don't anticipate this being a problem for the vast majority of objects, but if you find you get a file with *several* unexpected "not found" labels, please file an issue for me to look into it and determine if this shortcut caused it and how best to implement a new way of handling.
 
@@ -82,7 +81,17 @@ Enjoy
 - The [FreeSO](https://freeso.org/) Discord server, because I sort of "liveblogged"/rubber ducked a few issues I was having in its Sims 1 channel, trying to figure out why various sprite things (weird layering, crashing with SPR#) were happening so it was a help in me figuring out enough to not give up
 - [TheSims.css](https://github.com/inbn/TheSims.css) for providing a reference for how Sims-like styling could be achieved, even though CSS is not Kotlin/Compose
 
+### License
+
+This project is licensed under GNU GPL 3.0.
+
+[Comic Neue](https://fonts.google.com/specimen/Comic+Neue), the Comic-Sans-MS-like font used in the tool's interface, is available at Google Fonts [under the SIL Open Font License, version 1.1](https://fonts.google.com/specimen/Comic+Neue/license).
+
+[FileKit](https://github.com/vinceglb/FileKit), the library used to provide file picking and saving functionality, is published [under the MIT License](https://github.com/vinceglb/FileKit?tab=MIT-1-ov-file).
+
 ## Getting this running inside an IDE like IntelliJ IDEA, for developers
+
+This section is largely the provided boilerplate IntelliJ IDEA creates with an empty project.
 
 This is a Kotlin Multiplatform project targeting Desktop (JVM).
 
