@@ -44,6 +44,7 @@ import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
 import io.github.vinceglb.filekit.dialogs.compose.rememberFileSaverLauncher
 import io.github.vinceglb.filekit.downloadDir
 import io.github.vinceglb.filekit.name
+import io.github.vinceglb.filekit.parent
 import io.github.vinceglb.filekit.path
 import io.github.vinceglb.filekit.readBytes
 import io.github.vinceglb.filekit.sink
@@ -67,6 +68,8 @@ fun App() {
         //1.0 header for checking against input file to see if it's a 1.0 iff
         val headerValidation = "4946462046494C4520312E303A5459504520464F4C4C4F5745442042592053495A4500204A414D494520444F4F524E424F532026204D41584953203139393600"
         val userDir = FileKit.downloadDir // Current account's download folder is default save location
+        var pickerDir: PlatformFile? by remember { mutableStateOf(userDir) }
+        var saverDir = userDir
         val shorterLengthFormat = HexFormat {
             number.removeLeadingZeros = true
             number.minLength = 8
@@ -78,7 +81,7 @@ fun App() {
         val inputFile = rememberFilePickerLauncher(type = FileKitType.File(extensions = listOf("iff", "spf", "stx")),
             mode = FileKitMode.Single,
             title = stringResource(Res.string.input_button),
-            directory = userDir)  { filePicked ->
+            directory = pickerDir)  { filePicked ->
             inputPF = filePicked // Sets for use elsewhere
             chunkList.clear() // Clears chunkList if new file chosen so it doesn't just grow
             showComplete = false // Clears completion because new file chosen
@@ -86,6 +89,7 @@ fun App() {
             filePicked?.let {
                 coroutineScope.launch {
                     BookmarkManager.save(it) // Empty file created after conversion if this is not here
+                    //pickerDir = it.parent()
                 }
             }
         }
@@ -149,11 +153,11 @@ fun App() {
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.onPrimary) // off-white text
             }
-            if (validation == "success") {
+            if (inputPF != null && validation == "success") {
                 Text(stringResource(Res.string.input_success),
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.onPrimary) // Looks like a 1.0 iff!
-            } else if (validation == "error") {
+            } else if (inputPF != null && validation == "error") {
                 Text(stringResource(Res.string.input_error),
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.error,
@@ -188,7 +192,7 @@ fun App() {
                     chunkCounts = completeChunks.groupingBy { it }.eachCount()
                 }
             }
-            if (completeChunks.isNotEmpty() && validation != "error") { // if it has chunks and is 1.0 iff
+            if (inputPF != null && completeChunks.isNotEmpty() && validation != "error") { // if it has chunks and is 1.0 iff
                 Text(stringResource(Res.string.input_resources),
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.onPrimary) // Prefix for list
@@ -199,7 +203,7 @@ fun App() {
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.onPrimary) // note about NAME and XXXX
             }
-            if (validation == "success") {
+            if (inputPF != null && validation == "success") {
                 Text(
                     stringResource(Res.string.output_instruction),
                     style = MaterialTheme.typography.bodyMedium, // font
@@ -338,7 +342,7 @@ fun App() {
             Button(onClick = { outputFile.launch(suggestedName = "converted prototype file",
                 extension = "iff", //TODO: Figure out if FileKit can allow for multiple extension choices but still limited
                 directory = userDir) },
-                enabled = validation == "success",//Only work if input file is a 1.0 iff
+                enabled = inputPF != null && validation == "success",//Only work if input file is a 1.0 iff
                 shape = MaterialTheme.shapes.medium,
                 colors = ButtonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
