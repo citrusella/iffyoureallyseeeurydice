@@ -145,6 +145,7 @@ fun App() {
             }
             if (inputPF != null) {
                 pickerDir = inputPF!!.parent()
+                println(pickerDir) //This line exists SOLELY to prevent a lint error from triggering an "are you sure" with EVERY GitHub commit.
                 Text(stringResource(Res.string.input_file, inputPF!!.name),// Selected file: iffName.iff
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.onPrimary) // off-white text
