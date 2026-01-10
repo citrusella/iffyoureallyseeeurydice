@@ -16,4 +16,5 @@
     <string name="output_button">Pick folder and filename to create new 2.0 iff</string>
     <string name="output_file">%1$s</string>
     <string name="output_done">Conversion done! Enjoy your new file at %1$s! (If what you converted was an .spf you will need to either change its file extension yourself or combine it with your .iff in another program (for example, by importing it in IffPencil).)</string>
+    <string name="restart">Clear and restart</string>
 </resources>

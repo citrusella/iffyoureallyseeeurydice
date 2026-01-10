@@ -2,8 +2,12 @@ package io.github.citrusella.iffyoureallyseeeurydice
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -17,6 +21,7 @@ import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withLink
+import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 import iffyoureallyseeeurydice.composeapp.generated.resources.Res
@@ -36,6 +41,8 @@ import iffyoureallyseeeurydice.composeapp.generated.resources.string_space
 import iffyoureallyseeeurydice.composeapp.generated.resources.title_why
 import iffyoureallyseeeurydice.composeapp.generated.resources.welcome
 import io.github.citrusella.iffyoureallyseeeurydice.theme.Theme
+import io.github.citrusella.iffyoureallyseeeurydice.theme.edgePad
+import io.github.citrusella.iffyoureallyseeeurydice.theme.paragraphPad
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.dialogs.FileKitMode
@@ -91,14 +98,13 @@ fun App() {
                     BookmarkManager.save(it) // Empty file created after conversion if this is not here
                 }
             }
-
-            pickerDir = filePicked?.parent()
         }
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
                 .safeContentPadding()
                 .fillMaxSize()
+                .padding(edgePad)
                 .verticalScroll(rememberScrollState()), // scroll if too big for window, unsure how to implement scrollbar right now but the scrolling itself works
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -119,6 +125,7 @@ fun App() {
                 style = MaterialTheme.typography.bodyMedium, // font
                 color = MaterialTheme.colorScheme.onPrimary
             )
+            Spacer(modifier = Modifier.size(paragraphPad))
             Text(stringResource(Res.string.input_instruction),// First you'll need...
                 style = MaterialTheme.typography.bodyMedium, // font
                 color = MaterialTheme.colorScheme.onPrimary) // off-white text
@@ -130,12 +137,14 @@ fun App() {
                     contentColor = MaterialTheme.colorScheme.onSecondary,
                     disabledContainerColor = MaterialTheme.colorScheme.tertiary,
                     disabledContentColor = MaterialTheme.colorScheme.onTertiary
-                )
+                ),
+                modifier = Modifier.defaultMinSize(1.dp,1.dp)
             ) {
                 Text(stringResource(Res.string.input_button),
                     style = MaterialTheme.typography.bodyMedium) //Select 1.0 iff
             }
             if (inputPF != null) {
+                pickerDir = inputPF!!.parent()
                 Text(stringResource(Res.string.input_file, inputPF!!.name),// Selected file: iffName.iff
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.onPrimary) // off-white text
@@ -153,6 +162,7 @@ fun App() {
                 Text(stringResource(Res.string.no_file),//No file selected
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.onPrimary) // off-white text
+                Spacer(modifier = Modifier.size(paragraphPad))
             }
             if (inputPF != null && validation == "success") {
                 Text(stringResource(Res.string.input_success),
@@ -163,6 +173,7 @@ fun App() {
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.error,
                     fontWeight = FontWeight.Bold) // No it doesn't
+                Spacer(modifier = Modifier.size(paragraphPad))
             }
             if (inputPF != null) {
                 coroutineScope.launch {
@@ -194,17 +205,25 @@ fun App() {
                 }
             }
             if (inputPF != null && completeChunks.isNotEmpty() && validation != "error") { // if it has chunks and is 1.0 iff
-                Text(stringResource(Res.string.input_resources),
+                Spacer(modifier = Modifier.size(paragraphPad))
+                Text(buildAnnotatedString {
+                    append(stringResource(Res.string.input_resources))
+                    append(stringResource(Res.string.string_space))
+                    append(chunkCounts
+                        .toString()
+                        .replace("{","")
+                        .replace("}","")
+                    )
+                },
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.onPrimary) // Prefix for list
-                Text(chunkCounts.toString(),
-                    style = MaterialTheme.typography.bodyMedium, // font
-                    color = MaterialTheme.colorScheme.onPrimary) // list
+                Spacer(modifier = Modifier.size(paragraphPad))
                 Text(stringResource(Res.string.input_note),
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.onPrimary) // note about NAME and XXXX
             }
             if (inputPF != null && validation == "success") {
+                Spacer(modifier = Modifier.size(paragraphPad))
                 Text(
                     stringResource(Res.string.output_instruction),
                     style = MaterialTheme.typography.bodyMedium, // font
@@ -336,20 +355,22 @@ fun App() {
                             }
                             showComplete = true // allows successful creation message to show
                             outputFileName = file.path //provides file path for message
+                            saverDir = file.parent()
                         }
                     }
                 }
             }
             Button(onClick = { outputFile.launch(suggestedName = "converted prototype file",
                 extension = "iff", //TODO: Figure out if FileKit can allow for multiple extension choices but still limited
-                directory = userDir) },
+                directory = saverDir) },
                 enabled = inputPF != null && validation == "success",//Only work if input file is a 1.0 iff
                 shape = MaterialTheme.shapes.medium,
                 colors = ButtonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
                     contentColor = MaterialTheme.colorScheme.onSecondary,
                     disabledContainerColor = MaterialTheme.colorScheme.tertiary,
-                    disabledContentColor = MaterialTheme.colorScheme.onTertiary)
+                    disabledContentColor = MaterialTheme.colorScheme.onTertiary),
+                modifier = Modifier.defaultMinSize(1.dp,1.dp)
             ) {
                 Text(stringResource(Res.string.output_button), //Pick file and save
                     style = MaterialTheme.typography.bodyMedium) // font
@@ -358,6 +379,23 @@ fun App() {
                 Text(stringResource(Res.string.output_done,outputFileName),
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.onPrimary) //Conversion done!
+                 /*Button(onClick = {
+                     inputPF = null
+                     outputFileName = "none"
+                     showComplete = false
+                                  },
+                    enabled = inputPF != null && validation == "success",//Only work if input file is a 1.0 iff
+                    shape = MaterialTheme.shapes.medium,
+                    colors = ButtonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSecondary,
+                        disabledContainerColor = MaterialTheme.colorScheme.tertiary,
+                        disabledContentColor = MaterialTheme.colorScheme.onTertiary),
+                    modifier = Modifier.defaultMinSize(1.dp,1.dp)
+                ) {
+                    Text(stringResource(Res.string.restart), //Pick file and save
+                        style = MaterialTheme.typography.bodyMedium) // font
+                }*/
             }
         }
     }
