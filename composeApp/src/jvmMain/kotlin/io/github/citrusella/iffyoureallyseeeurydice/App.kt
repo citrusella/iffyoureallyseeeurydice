@@ -68,26 +68,26 @@ import org.jetbrains.compose.resources.stringResource
 @Preview
 fun App() {
     Theme {
-        var showComplete by remember { mutableStateOf(false) }
-        var validation by remember { mutableStateOf("none")}
-        var inputPF by remember { mutableStateOf<PlatformFile?>(null) }
-        val chunkList by remember { mutableStateOf(mutableListOf<String>()) }
-        var completeChunks by remember { mutableStateOf(mutableListOf<String>())}
-        var chunkCounts by remember { mutableStateOf(mapOf<String, Int>()) }
-        var outputFileName by remember { mutableStateOf("none")}
-        val coroutineScope = rememberCoroutineScope()
+        var showComplete by remember { mutableStateOf(false) } // is conversion complete?
+        var validation by remember { mutableStateOf("none")} // is valid 1.0?
+        var inputPF by remember { mutableStateOf<PlatformFile?>(null) } // input file
+        val chunkList by remember { mutableStateOf(mutableListOf<String>()) } // list of iff chunks
+        var completeChunks by remember { mutableStateOf(mutableListOf<String>())} // chunk list when complete
+        var chunkCounts by remember { mutableStateOf(mapOf<String, Int>()) } // chunk list converted to count list
+        var outputFileName by remember { mutableStateOf("none")} // name of converted file plus path
+        val coroutineScope = rememberCoroutineScope() // run tasks off the main thread
         //1.0 header for checking against input file to see if it's a 1.0 iff
         val headerValidation = "4946462046494C4520312E303A5459504520464F4C4C4F5745442042592053495A4500204A414D494520444F4F524E424F532026204D41584953203139393600"
         val userDir = FileKit.downloadDir // Current account's download folder is default save location
-        var pickerDir: PlatformFile? by remember { mutableStateOf(userDir) }
-        var saverDir: PlatformFile? by remember { mutableStateOf(userDir) }
+        var pickerDir: PlatformFile? by remember { mutableStateOf(userDir) } // remember picker's directory in same session
+        var saverDir: PlatformFile? by remember { mutableStateOf(userDir) } // remember saver's directory in same session
         val shorterLengthFormat = HexFormat {
             number.removeLeadingZeros = true
-            number.minLength = 8
+            number.minLength = 8 //format hex string so that it is a minimum of eight characters, for converting parts of header
         }
         val byteArray = HexFormat {
             bytes
-        }
+        } // byte array
         //Supports importing stx even though I haven't seen in prototypes
         val inputFile = rememberFilePickerLauncher(type = FileKitType.File(extensions = listOf("iff", "spf", "stx")),
             mode = FileKitMode.Single,
@@ -103,8 +103,8 @@ fun App() {
                 }
             }
         }
-        Box {
-            val verticalScroll = rememberScrollState()
+        Box { //needed to have the column and scrollbar work together
+            val verticalScroll = rememberScrollState() //remember where the scrollbar is
             Column(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background)
@@ -350,11 +350,9 @@ fun App() {
                                             nameChunk.substring(32) // get NAME's header out of way for substring search so it doesn't affect what's found
                                         val magicWord = nameChunkData.substring(16, 24)
                                         if (magicWord.equals("454d414e", ignoreCase = true)) { // if NAME entries
-                                            // TODO: Remove this line when null terminated handling is totally finished
                                             println("Handling for null terminated NAME chunks has not been implemented yet")
                                             labelBytes =
                                                 "48616E646C696E6720666F72206E756C6C2D7465726D696E61746564206E616D65206368756E6B73206973206E6F7420696D706C656D656E7465642079657400"
-                                            // TODO: Implement null terminated handling
                                             val nameChunkDataTrimmed = nameChunkData.substring(32)
                                             chunkName = nameChunkDataTrimmed.substringAfter(outputNameIdFlipped)
                                             labelBytes = chunkName.substringBefore("00")
@@ -463,7 +461,7 @@ fun App() {
                 }*/
                 }
             }
-            VerticalScrollbar(modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight(),
+            VerticalScrollbar(modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight(), //scrollbar
                 adapter = rememberScrollbarAdapter(verticalScroll)
             )
         }
