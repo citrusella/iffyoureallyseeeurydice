@@ -34,7 +34,7 @@ All you need to do is open the program, select your 1.0 iff, verify it seems to 
 
 ### I'm sold. How do I run and use it?
 
-(exe pending, will include a readme.txt for end users inside a zip)
+Visit the [Releases page](https://github.com/citrusella/iffyoureallyseeeurydice/releases) and download the build for your OS. It's not an installed program, so you can put it anywhere and run it. It comes with an executable and a simplified readme containing the bits of this readme that are relevant to helping you remember how the program works.
 
 Start the program, and you'll be greeted with a couple of welcome sentences explaining what the program is and what to do.
 
@@ -45,8 +45,6 @@ Once you pick a 1.0 iff, the program will load a list of the resources it sees i
 You might see two resource types you don't normally see. XXXX resources can exist even in 2.0/2.5 iff files, but they tend to contain garbage data. Object hacking programs like Iff Pencil 2 may not display them to you and may strip them out automatically on saving. This converter will write them to the file in the name of accuracy, but be aware that other programs may remove them in the course of your edits to the object. NAME resources are 1.0 specific resources that contain a list of all labels used by other resources in the file, and most files have only one resource named this, though some may have two. This converter will not write NAME resources themselves to the file but will use the last NAME chunk in the file to properly label the other resources in the way that a 2.0 iff expects.
 
 Select a destination folder and file name with the second button. This will write a new file, so make sure not to overwrite an existing one unless you mean to replace it with a new file. When the converter believes itself to be done, you will see a message that the file has been converted, listing the path the file was saved to.
-
-(txt readme that comes with exe will list common changes that often need to be made to files to get them to work right)
 
 #### Common incompatibilities between prototype objects and the final game
 
@@ -61,6 +59,14 @@ This is **not** an exhaustive list.
 - Iff Pencil 2 does not recognize SPR# resources in the DGRP viewer/editor (even ones in some Maxis-provided final game objects like the pedestrian portal), but the SPR# will work in-game.
 - It is possible for an object that uses SPR# instead of SPR2 to crash some tools that can display it, like T-mog or Sim Explorer. Generally if an object does this, it will *also* crash the game itself, if the game tries to load it. (This is also *usually* due to an incorrect flag in the chunk header, which this tool shouldn't be capable of messing up.)
 - Of note: Some objects need very minimal edits to work. Others (like floors or houses, for example) may require extensive reworking in order to run properly in the game or may never work using this method.
+
+### Okay, but why the name IFF You Really See Eurydice?
+
+Well, first, there's this song in build mode called ["If You Really See Eurydice"](https://www.youtube.com/watch?v=OAJIATuky28), which is really a good enough reason on its own to make the pun, and I'm surprised I seem to be the first.
+
+Secondly, the story of Eurydice from Greek myth is that she stepped on a viper and died, and Orpheus (her husband) played a song so sad that it basically helped him travel to the Underworld and retrieve her. There's more to that story (like Eurydice not actually being revived and Orpheus getting killed), but the parallel between bringing someone back to life and bringing a 1.0 file "back" in part by converting it to 2.0 was *also* too good to pass up.
+
+Honestly? This is one of the best software names I've come up with. I'm surprised it fits so well.
 
 ### To do/known issues
 
