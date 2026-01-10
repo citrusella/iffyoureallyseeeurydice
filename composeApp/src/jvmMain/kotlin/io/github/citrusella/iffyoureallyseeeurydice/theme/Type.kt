@@ -11,8 +11,6 @@ import iffyoureallyseeeurydice.composeapp.generated.resources.ComicNeue_Regular
 import iffyoureallyseeeurydice.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.Font
 
-val AppTypography = Typography()
-
 @Composable
 fun AppTypography(): Typography {
     val comicSans = FontFamily(

@@ -69,7 +69,7 @@ fun App() {
         val headerValidation = "4946462046494C4520312E303A5459504520464F4C4C4F5745442042592053495A4500204A414D494520444F4F524E424F532026204D41584953203139393600"
         val userDir = FileKit.downloadDir // Current account's download folder is default save location
         var pickerDir: PlatformFile? by remember { mutableStateOf(userDir) }
-        var saverDir = userDir
+        var saverDir: PlatformFile? by remember { mutableStateOf(userDir) }
         val shorterLengthFormat = HexFormat {
             number.removeLeadingZeros = true
             number.minLength = 8
@@ -89,9 +89,10 @@ fun App() {
             filePicked?.let {
                 coroutineScope.launch {
                     BookmarkManager.save(it) // Empty file created after conversion if this is not here
-                    //pickerDir = it.parent()
                 }
             }
+
+            pickerDir = filePicked?.parent()
         }
         Column(
             modifier = Modifier

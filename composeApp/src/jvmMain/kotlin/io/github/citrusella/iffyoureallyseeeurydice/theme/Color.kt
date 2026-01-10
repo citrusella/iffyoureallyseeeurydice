@@ -8,7 +8,7 @@ val button = Color(0xFF00518c)
 val textColor = Color(0xFFc0c7cb)
 val hoverColor = Color(0xFFFFFFFF)
 val linkColor = Color(0xFFA4D6FF)
-val disabledButton = Color(0x4000518c)
+val disabledButton = Color(0xFF000029)//Color(0x4000518c)
 val disabledButtonText = Color(0x80c0c7cb)
 val error = Color(0xFFE04850)
 
