@@ -1,5 +1,6 @@
 package io.github.citrusella.iffyoureallyseeeurydice
 
+import androidx.compose.foundation.ScrollbarStyle
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -462,7 +463,14 @@ fun App() {
                 }
             }
             VerticalScrollbar(modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight(), //scrollbar
-                adapter = rememberScrollbarAdapter(verticalScroll)
+                adapter = rememberScrollbarAdapter(verticalScroll),
+                style = ScrollbarStyle(
+                    thickness = edgePad,
+                    unhoverColor = MaterialTheme.colorScheme.secondary,
+                    hoverColor = MaterialTheme.colorScheme.tertiaryFixed,
+                    minimalHeight = edgePad,
+                    hoverDurationMillis = 0,
+                    shape = MaterialTheme.shapes.medium)
             )
         }
     }

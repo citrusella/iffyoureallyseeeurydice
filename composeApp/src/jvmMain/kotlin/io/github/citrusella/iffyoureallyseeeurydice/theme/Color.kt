@@ -11,6 +11,7 @@ val linkColor = Color(0xFFA4D6FF)
 val disabledButton = Color(0xFF000029)//Color(0x4000518c)
 val disabledButtonText = Color(0x80c0c7cb)
 val error = Color(0xFFE04850)
+val hoverBar = Color(0xFF005FA3)
 
 val colorScheme = lightColorScheme(
     primary = linkColor,
@@ -21,5 +22,6 @@ val colorScheme = lightColorScheme(
     onBackground = textColor,
     tertiary = disabledButton,
     onTertiary = disabledButtonText,
-    error = error
+    error = error,
+    tertiaryFixed = hoverBar
 )
