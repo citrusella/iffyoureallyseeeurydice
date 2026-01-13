@@ -100,7 +100,7 @@ fun App() {
 
             filePicked?.let {
                 coroutineScope.launch {
-                    BookmarkManager.save(it) // Empty file created after conversion if this is not here
+                    BookmarkManager.save(it) // Empty file created after conversion if this is not here, even though commands to load the bookmark are never used
                 }
             }
         }
@@ -108,11 +108,11 @@ fun App() {
             val verticalScroll = rememberScrollState() //remember where the scrollbar is
             Column(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.background)
+                    .background(MaterialTheme.colorScheme.background) // dark blue background like Sims 1 interface
                     .safeContentPadding()
                     .fillMaxSize()
-                    .padding(edgePad)
-                    .verticalScroll(verticalScroll), // scroll if too big for window, unsure how to implement scrollbar right now but the scrolling itself works
+                    .padding(edgePad) //small amount of padding around edges
+                    .verticalScroll(verticalScroll), // scroll if too big for window
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
@@ -132,30 +132,30 @@ fun App() {
                     style = MaterialTheme.typography.bodyMedium, // font
                     color = MaterialTheme.colorScheme.onPrimary
                 )
-                Spacer(modifier = Modifier.size(paragraphPad))
+                Spacer(modifier = Modifier.size(paragraphPad)) // paragraph padding spacer
                 Text(
                     stringResource(Res.string.input_instruction),// First you'll need...
                     style = MaterialTheme.typography.bodyMedium, // font
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = MaterialTheme.colorScheme.onPrimary // Light text
                 ) // off-white text
                 Button(
                     onClick = { inputFile.launch() },
-                    shape = MaterialTheme.shapes.medium,
+                    shape = MaterialTheme.shapes.medium, // rounded button but not quite circular
                     colors = ButtonColors(
-                        containerColor = MaterialTheme.colorScheme.secondary,
-                        contentColor = MaterialTheme.colorScheme.onSecondary,
-                        disabledContainerColor = MaterialTheme.colorScheme.tertiary,
-                        disabledContentColor = MaterialTheme.colorScheme.onTertiary
+                        containerColor = MaterialTheme.colorScheme.secondary, // light blue like in-game buttons
+                        contentColor = MaterialTheme.colorScheme.onSecondary, // white text
+                        disabledContainerColor = MaterialTheme.colorScheme.tertiary, // dark blue (the same as in-game text boxes actually) to indicate button is disabled
+                        disabledContentColor = MaterialTheme.colorScheme.onTertiary //darker text to go with darker button
                     ),
-                    modifier = Modifier.defaultMinSize(1.dp, 1.dp)
+                    modifier = Modifier.defaultMinSize(1.dp, 1.dp) // shrink button to smallest it could need to be for the text
                 ) {
                     Text(
                         stringResource(Res.string.input_button),
                         style = MaterialTheme.typography.bodyMedium
                     ) //Select 1.0 iff
                 }
-                if (inputPF != null) {
-                    pickerDir = inputPF!!.parent()
+                if (inputPF != null) { // if a file is found in the inputPF variable
+                    pickerDir = inputPF!!.parent() // set to last used folder so that it's easier to do multiple in one session without defaulting to user downloads
                     println(pickerDir) //This line exists SOLELY to prevent a lint error from triggering an "are you sure" with EVERY GitHub commit.
                     Text(
                         stringResource(Res.string.input_file, inputPF!!.name),// Selected file: iffName.iff
@@ -191,7 +191,7 @@ fun App() {
                     Text(
                         stringResource(Res.string.input_error),
                         style = MaterialTheme.typography.bodyMedium, // font
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.error, // WCAG AA contrast compliant red color
                         fontWeight = FontWeight.Bold
                     ) // No it doesn't
                     Spacer(modifier = Modifier.size(paragraphPad))
@@ -227,27 +227,26 @@ fun App() {
                                     inputHex.length // if offset is bigger than entire iff length, exception gets thrown and offset is set to iff length and loop stops running
                             }
                         }
-                        completeChunks =
-                            chunkList // chunk list kept showing as empty in string, this fixes it, may be unneeded
-                        chunkCounts = completeChunks.groupingBy { it }.eachCount()
+                        completeChunks = chunkList // chunk list kept showing as empty in string, this fixes it, may be unneeded
+                        chunkCounts = completeChunks.groupingBy { it }.eachCount() // convert to list of counts of each chunk type found, e.g. DGRP=2 instead of DGRP, DGRP
                     }
                 }
                 if (inputPF != null && completeChunks.isNotEmpty() && validation != "error") { // if it has chunks and is 1.0 iff
                     Spacer(modifier = Modifier.size(paragraphPad))
                     Text(
                         buildAnnotatedString {
-                            append(stringResource(Res.string.input_resources))
+                            append(stringResource(Res.string.input_resources)) //prefix for list
                             append(stringResource(Res.string.string_space))
                             append(
                                 chunkCounts
                                     .toString()
                                     .replace("{", "")
                                     .replace("}", "")
-                            )
+                            ) // list of chunks with count
                         },
                         style = MaterialTheme.typography.bodyMedium, // font
                         color = MaterialTheme.colorScheme.onPrimary
-                    ) // Prefix for list
+                    )
                     Spacer(modifier = Modifier.size(paragraphPad))
                     Text(
                         stringResource(Res.string.input_note),
@@ -350,23 +349,19 @@ fun App() {
                                         val nameChunkData =
                                             nameChunk.substring(32) // get NAME's header out of way for substring search so it doesn't affect what's found
                                         val magicWord = nameChunkData.substring(16, 24)
-                                        if (magicWord.equals("454d414e", ignoreCase = true)) { // if NAME entries
-                                            println("Handling for null terminated NAME chunks has not been implemented yet")
-                                            labelBytes =
-                                                "48616E646C696E6720666F72206E756C6C2D7465726D696E61746564206E616D65206368756E6B73206973206E6F7420696D706C656D656E7465642079657400"
-                                            val nameChunkDataTrimmed = nameChunkData.substring(32)
-                                            chunkName = nameChunkDataTrimmed.substringAfter(outputNameIdFlipped)
-                                            labelBytes = chunkName.substringBefore("00")
-                                            if (labelBytes.length % 2 != 0) labelBytes += "0"
-                                        } else {
+                                        if (magicWord.equals("454d414e", ignoreCase = true)) { // if NAME entries are null terminated
+                                            //println("Handling for null terminated NAME chunks has not been implemented yet")
+                                            //labelBytes = "48616E646C696E6720666F72206E756C6C2D7465726D696E61746564206E616D65206368756E6B73206973206E6F7420696D706C656D656E7465642079657400"
+                                            val nameChunkDataTrimmed = nameChunkData.substring(32) // cut off some non-entry data at the beginning
+                                            chunkName = nameChunkDataTrimmed.substringAfter(outputNameIdFlipped) // start from nameId flipped to find a null terminated entry
+                                            labelBytes = chunkName.substringBefore("00") // stop when you see two zeros in the string
+                                            if (labelBytes.length % 2 != 0) labelBytes += "0" // if the number of characters in labelBytes is odd then it captured a byte that ends in 0 prior to a null string--adding an extra zero avoids errors and actually records the null byte
+                                        } else { // if NAME entries are length prefixed
                                             val outputLabelLength = nameChunkData.substringAfter(outputNameIdFlipped)
                                                 .take(2) // get label length for length prefixed NAME entry
-                                            var outputLabelLengthInt =
-                                                outputLabelLength.hexToInt() // label length as int
-                                            outputLabelLengthInt =
-                                                outputLabelLengthInt.times(2) // times 2 for string length
-                                            outputLabelPrefix =
-                                                outputNameIdFlipped + outputLabelLength // prefix to find substring is flipped nameId followed by length prefix
+                                            var outputLabelLengthInt = outputLabelLength.hexToInt() // label length as int
+                                            outputLabelLengthInt = outputLabelLengthInt.times(2) // times 2 for string length
+                                            outputLabelPrefix = outputNameIdFlipped + outputLabelLength // prefix to find substring is flipped nameId followed by length prefix
                                             chunkName = nameChunk.substringAfterLast(
                                                 outputLabelPrefix,
                                                 missingDelimiterValue = nameError
@@ -409,7 +404,7 @@ fun App() {
                                 }
                                 showComplete = true // allows successful creation message to show
                                 outputFileName = file.path //provides file path for message
-                                saverDir = file.parent()
+                                saverDir = file.parent() // keep save location in variable to make multiple conversions in one session easier
                             }
                         }
                     }
@@ -439,7 +434,7 @@ fun App() {
                 }
                 if (showComplete) {
                     Text(
-                        stringResource(Res.string.output_done, outputFileName),
+                        stringResource(Res.string.output_done, outputFileName), // Your file is ready at the save location
                         style = MaterialTheme.typography.bodyMedium, // font
                         color = MaterialTheme.colorScheme.onPrimary
                     ) //Conversion done!
