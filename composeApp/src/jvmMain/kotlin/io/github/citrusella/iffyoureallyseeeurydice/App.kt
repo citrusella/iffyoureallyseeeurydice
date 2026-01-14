@@ -292,10 +292,8 @@ fun App() {
                                 }
                                 var nameLengthInt = nameLength.hexToInt().times(2) //get chunk's length as int
                                 nameLengthInt -= 8 //subtract 8 so that it only takes to end of block when accounting for nameChunk
-                                println("$nameChunkInfo $nameLength $nameLengthInt")
                                 nameChunk += inputHex.substringAfterLast(nameChunk)
                                     .take(nameLengthInt) //add the rest of the chunk to NAME to make full chunk
-                                println("Full name $nameChunk")
                                 while (chunkOffset < inputHex.length) { // only keep going until end of file
                                     val outputSink = file.sink(append = true)
                                         .buffered() //allow for appending chunks to existing file with header
@@ -383,7 +381,6 @@ fun App() {
                                         labelBytes = nameError
                                     }
                                     val outputData = inputChunk.substring(32) // chunk data for output
-                                    println("${outputType.length}, ${outputSizeHex.length}, ${outputId.length}, ${outputFlags.length}, ${labelBytes.length}, ${outputData.length}")
                                     val outputChunk =
                                         "$outputType$outputSizeHex$outputId$outputFlags$labelBytes$outputData" // now put it all together and what do you got?
                                     try {
