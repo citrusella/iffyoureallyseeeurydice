@@ -16,7 +16,7 @@ All you need to do is open the program, select your 1.0 iff, verify it seems to 
 - Creates files that can be opened (and potentially edited) in some existing iff editing tools, like Iff Pencil 2, Codex, Script Station, Volcanic, etc. (I imagine also IffSnooper if you're on Mac. But I'm not on Mac, so I can't say for sure.)
 - Converts files from version 1.0 to 2.0 verbatim wherever possible (the file structure is kept the same except for required structural changes and the leaving out of resources not needed to fit those new structural changes)
 - Converts iff and spf files (though it converts them both to the iff file ending due to apparent limitations in the file picking library used in the project)
-  - It also can convert stx files, but I haven't come across any, it's just an allowed file type for the file to convert from
+  - It also can convert 1.0 formatted stx files, but I haven't come across any, it's just an allowed file type for the file to convert from
 - Provides comments for most lines in the source code that I wrote so that you understand why I put them there if you go looking or want to contribute
 
 ### What this project *does not do*:
@@ -32,7 +32,13 @@ All you need to do is open the program, select your 1.0 iff, verify it seems to 
 
 ### I'm sold. How do I run and use it?
 
-Visit the [Releases page](https://github.com/citrusella/iffyoureallyseeeurydice/releases) and download the build for your OS. It's not an installed program, so you can put it anywhere and run it. It comes with an executable and a simplified readme containing the bits of this readme that are relevant to helping you remember how the program works. An executable is available for Windows, and a Linux one is also coming if I can fix an issue with running the build command.
+#### Steps for downloading the program
+
+Visit the [Releases page](https://github.com/citrusella/iffyoureallyseeeurydice/releases) and download the build for your OS (specifics about which versions of the OS are supported will be noted in the specific release notes).
+
+It's not an installed program, so you can unzip it anywhere and run it. It comes with an executable and a simplified readme containing the bits of this readme that are relevant to helping you remember how the program works. An executable is available for Windows, and a Linux one is also coming if I can fix an issue I'm having with running the build command. (I cannot produce a version for Mac right now; the method I'm using would require me to be on a Mac to build it and I no longer have one handy.)
+
+#### Steps for using the program
 
 Start the program, and you'll be greeted with a couple of welcome sentences explaining what the program is and what to do.
 
@@ -46,11 +52,11 @@ Select a destination folder and file name with the second button. This will writ
 
 #### Common incompatibilities between prototype objects and the final game
 
-This is **not** an exhaustive list.
+This is **not** an exhaustive list. It is possible for an object to have issues not mentioned here.
 
 - Prototype animations never work because they do not exist in the final game (and were designed with a different "skeleton" in mind so they wouldn't work anyway). These always need to be replaced with a new animation/equivalent final game animation.
-- Sounds will not work as written. Prototype sounds can be ported as well, or the sound can be replaced with an existing sound in the game.
-- OBJDs are version 136 rather than 138. They must be upgraded to version 138. There may be more than one way to properly upgrade it.
+- Sounds will not work as written. If you desire close accuracy, prototype sounds can be ported in a way the final game supports, or the sound can be replaced with an existing sound in the game.
+- OBJDs are version 136 rather than 138. They must be upgraded to version 138. There may be more than one way to properly upgrade them.
 - TTABs are an old version and need to be upgraded. There may be more than one way to do this.
 - GUIDs have a *high likelihood* of conflicting with later Maxis objects, because many base game and even in some cases EP objects are more polished revisions of these prototype objects. Clone it or something--and make sure you have a magic cookie if you intend to share!--unless your intent is to create a default replacement for some reason.
 - Most editors are not equipped to edit prototype catalog resources (CATS), or at least they are not equipped to edit them in a nice pretty GUI. Transmogrifier can do so but in so doing will convert it to a CTSS like the final game uses. (This may be desired if you want a translatable catalog name and description and is an easy enough conversion to do manually if you don't want T-mog to do it.)
@@ -72,6 +78,7 @@ Honestly? This is one of the best software names I've come up with. I'm surprise
 - The application always uses an iff file ending, even if the imported file was another file ending like spf. This does not matter in regard to producing a valid file, but I wanted to provide the user with a choice and am currently not doing so. It *appears* that I cannot change the file endings offered to the user to save as without allowing *every* file ending, at least not with the existing file read/write/pick library I'm using. I'm still looking into it, but if you want to leave the iff and spf (or stx if that ever becomes relevant) separate then you'll need to fix the file endings yourself. (If you intend to combine them, you actually have a leg up: Iff Pencil 2's "IFF file with resources" import function (one easy way to combine the two) only allows imports of files that have iff endings.)
 - NAME chunk (1.0 iff label format) handling was implemented in a shortcut sort of way. I don't anticipate this being a problem for the vast majority of objects, because most objects only have one NAME chunk, or the NAME with all the info is the last one in the file.  However, if you find you get a file with *several* unexpected "not found" labels, please file an issue for me to look into it. That way, I can determine if this shortcut caused it and how best to implement a new way of handling, if needed.
 - This is minor, but I wish the buttons were closer to the look of the game. My testing is telling me this either isn't possible with Compose or I'm not skilled enough to replicate the kinds of shadows it would need to make this look.
+- Anything in this repository's [issue list](https://github.com/citrusella/iffyoureallyseeeurydice/issues), of course--feel free to report issues I didn't manage to find there!
 
 ### About the author
 
@@ -88,18 +95,20 @@ Enjoy!
 ### Acknowledgements
 
 - [FileKit](https://github.com/vinceglb/FileKit) was used to provide the file picking and saving functionality
-- [SimsTek Wiki](https://simstek.fandom.com/wiki/IFF) as well as the older [*The Sims*™ Technical Aspects](https://web.archive.org/web/20220410061934/http://simtech.sourceforge.net/tech/iff.html) (dead, Wayback link) were valuable resources for me to gain enough understanding of the underlying format of iff hexadecimal to be able to understand what was needed for conversion
+- [SimsTek Wiki's page on the IFF format](https://simstek.fandom.com/wiki/IFF) as well as the older [*The Sims*™ Technical Aspects](https://web.archive.org/web/20220410061934/http://simtech.sourceforge.net/tech/iff.html) (dead, Wayback link) were valuable resources for me to gain enough understanding of the underlying format of iff hexadecimal to be able to understand what was needed for conversion
 - [TS1 - Maxis Beta Conversions Project (+Sprites!)](https://modthesims.info/showthread.php?t=686236) thread at Mod the Sims, for getting me to finally start successfully object hacking, and because it's where I've discussed some of my discoveries doing this kind of thing, as I started looking more and more into the hex code
 - The [FreeSO](https://freeso.org/) Discord server, because I sort of "liveblogged"/rubber ducked a few issues I was having in its Sims 1 channel, trying to figure out why various sprite things (weird layering, crashing with SPR#) were happening so it was a help in me figuring out enough to not give up
-- [TheSims.css](https://github.com/inbn/TheSims.css) for providing a reference for how Sims-like styling could be achieved, even though CSS is not Kotlin/Compose
+- [TheSims.css](https://github.com/inbn/TheSims.css) for providing a reference for how Sims-like styling could be achieved in this program's interface, even though CSS is not Kotlin/Compose
 
 ### License
 
-This project is licensed under GNU GPL 3.0.
+This project is released under the GNU GPL 3.0 license, [viewable here](https://github.com/citrusella/iffyoureallyseeeurydice?tab=GPL-3.0-1-ov-file).
 
 [Comic Neue](https://fonts.google.com/specimen/Comic+Neue), the Comic-Sans-MS-like font used in the tool's interface, is available at Google Fonts [under the SIL Open Font License, version 1.1](https://fonts.google.com/specimen/Comic+Neue/license).
 
 [FileKit](https://github.com/vinceglb/FileKit), the library used to provide file picking and saving functionality, is published [under the MIT License](https://github.com/vinceglb/FileKit?tab=MIT-1-ov-file).
+
+The program icon is a cropped version of _Wounded Eurydice_ by Jean-Baptiste-Camille Corot, [viewable with extra information here](https://commons.wikimedia.org/wiki/File:Jean_Baptiste_Camille_Corot_-_Wounded_Eurydice_-_1894.1042_-_Art_Institute_of_Chicago.jpg). Published in 1868 by an artist who died in 1875, it is in the public domain. The digital photograph/reproduction which was used as the source to crop from (and resize where necessary) was produced by the Art Institute of Chicago and published under a [CC0 1.0 Universal Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/deed.en).
 
 ## Getting this running inside an IDE like IntelliJ IDEA, for developers
 
