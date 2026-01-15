@@ -32,7 +32,7 @@ All you need to do is open the program, select your 1.0 iff, verify it seems to 
 
 ### I'm sold. How do I run and use it?
 
-Visit the [Releases page](https://github.com/citrusella/iffyoureallyseeeurydice/releases) and download the build for your OS. It's not an installed program, so you can put it anywhere and run it. It comes with an executable and a simplified readme containing the bits of this readme that are relevant to helping you remember how the program works.
+Visit the [Releases page](https://github.com/citrusella/iffyoureallyseeeurydice/releases) and download the build for your OS. It's not an installed program, so you can put it anywhere and run it. It comes with an executable and a simplified readme containing the bits of this readme that are relevant to helping you remember how the program works. Executables are available for Windows and Linux.
 
 Start the program, and you'll be greeted with a couple of welcome sentences explaining what the program is and what to do.
 

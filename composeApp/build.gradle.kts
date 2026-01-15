@@ -42,8 +42,11 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
-            packageName = "io.github.citrusella.iffyoureallyseeeurydice"
+            packageName = "IFFYouReallySeeEurydice"
             packageVersion = "1.0.0"
+            description = "A simple tool for converting 1.0 version Sims iff files to 2.0"
+            copyright = "Created in 2026 by purplewowies, released under GNU Public License 3.0"
+            licenseFile.set(project.file("LICENSE.txt"))
 
             windows {
                 iconFile.set(File("icons/eurydice icon.ico"))
