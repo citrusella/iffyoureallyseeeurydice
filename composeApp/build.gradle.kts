@@ -49,13 +49,13 @@ compose.desktop {
             licenseFile.set(project.file("LICENSE.txt"))
 
             windows {
-                iconFile.set(File("icons/eurydice icon.ico"))
+                iconFile.set(File("icons/eurydice icon multi.ico"))
             }
             linux {
                 iconFile.set(File("icons/eurydice icon.png"))
             }
             macOS {
-                iconFile.set(File("icons/eurydice icon.icns"))
+                iconFile.set(File("icons/eurydice icon multi.icns"))
             }
         }
     }
