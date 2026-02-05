@@ -346,17 +346,25 @@ fun App() {
                                         outputNameIdFlipped += outputNameId.take(2) // finish flipping nameId
                                         val nameChunkData =
                                             nameChunk.substring(32) // get NAME's header out of way for substring search so it doesn't affect what's found
+                                        //println(nameChunkData)
                                         val magicWord = nameChunkData.substring(16, 24)
                                         if (magicWord.equals("454d414e", ignoreCase = true)) { // if NAME entries are null terminated
                                             //println("Handling for null terminated NAME chunks has not been implemented yet")
                                             //labelBytes = "48616E646C696E6720666F72206E756C6C2D7465726D696E61746564206E616D65206368756E6B73206973206E6F7420696D706C656D656E7465642079657400"
                                             val nameChunkDataTrimmed = nameChunkData.substring(32) // cut off some non-entry data at the beginning
-                                            chunkName = nameChunkDataTrimmed.substringAfter(outputNameIdFlipped) // start from nameId flipped to find a null terminated entry
+                                            var labelSubstring = nameChunkDataTrimmed.substringAfter(outputNameIdFlipped)
+                                            while (labelSubstring.length % 2 != 0) { // if this substring is odd then the ID was found mid-byte in the string
+                                                labelSubstring = labelSubstring.substringAfter(outputNameIdFlipped) // while the substring is odd check for the next substring until it's not odd
+                                            }
+                                            chunkName = labelSubstring // start from nameId flipped to find a null terminated entry
                                             labelBytes = chunkName.substringBefore("00") // stop when you see two zeros in the string
                                             if (labelBytes.length % 2 != 0) labelBytes += "0" // if the number of characters in labelBytes is odd then it captured a byte that ends in 0 prior to a null string--adding an extra zero avoids errors and actually records the null byte
                                         } else { // if NAME entries are length prefixed
-                                            val outputLabelLength = nameChunkData.substringAfter(outputNameIdFlipped)
-                                                .take(2) // get label length for length prefixed NAME entry
+                                            var labelSubstring = nameChunkData.substringAfter(outputNameIdFlipped)
+                                            while (labelSubstring.length % 2 != 0) { // if this substring is odd then the ID was found mid-byte in the string
+                                                labelSubstring = labelSubstring.substringAfter(outputNameIdFlipped) // while the substring is odd check for the next substring until it's not odd
+                                            }
+                                            val outputLabelLength = labelSubstring.take(2) // get label length for length prefixed NAME entry
                                             var outputLabelLengthInt = outputLabelLength.hexToInt() // label length as int
                                             outputLabelLengthInt = outputLabelLengthInt.times(2) // times 2 for string length
                                             outputLabelPrefix = outputNameIdFlipped + outputLabelLength // prefix to find substring is flipped nameId followed by length prefix
