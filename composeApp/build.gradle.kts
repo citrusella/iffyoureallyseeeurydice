@@ -41,7 +41,7 @@ compose.desktop {
         mainClass = "io.github.citrusella.iffyoureallyseeeurydice.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe, TargetFormat.AppImage)
             packageName = "IFFYouReallySeeEurydice"
             packageVersion = "1.0.1"
             description = "A simple tool for converting 1.0 version Sims iff files to 2.0"
