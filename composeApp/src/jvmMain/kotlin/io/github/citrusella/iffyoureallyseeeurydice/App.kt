@@ -72,6 +72,7 @@ fun App() {
         var showComplete by remember { mutableStateOf(false) } // is conversion complete?
         var validation by remember { mutableStateOf("none")} // is valid 1.0?
         var inputPF by remember { mutableStateOf<PlatformFile?>(null) } // input file
+        var nameList by remember {mutableStateOf(mutableMapOf<String, String>())}
         val chunkList by remember { mutableStateOf(mutableListOf<String>()) } // list of iff chunks
         var completeChunks by remember { mutableStateOf(mutableListOf<String>())} // chunk list when complete
         var chunkCounts by remember { mutableStateOf(mapOf<String, Int>()) } // chunk list converted to count list
@@ -227,6 +228,7 @@ fun App() {
                                     inputHex.length // if offset is bigger than entire iff length, exception gets thrown and offset is set to iff length and loop stops running
                             }
                         }
+                        nameList = NameList().buildLabelList(inputBytes)
                         completeChunks = chunkList // chunk list kept showing as empty in string, this fixes it, may be unneeded
                         chunkCounts = completeChunks.groupingBy { it }.eachCount() // convert to list of counts of each chunk type found, e.g. DGRP=2 instead of DGRP, DGRP
                     }
@@ -387,9 +389,11 @@ fun App() {
                                             } else {
                                                 chunkName // if label errored, leave as chunkName
                                             }
+                                            labelBytes = nameList[outputNameIdFlipped]!!
                                         }
                                     }
                                     println("$outputNameId $outputLabelPrefix")
+                                    println("labeL text: $labelBytes")
 
                                     //var label = chunkName
                                     //while (label.length < 64) label += "\u0000"
