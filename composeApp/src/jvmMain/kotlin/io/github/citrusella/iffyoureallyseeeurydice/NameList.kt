@@ -1,7 +1,5 @@
 package io.github.citrusella.iffyoureallyseeeurydice
 
-import kotlin.use
-
 class NameList {
     fun buildLabelList(file: ByteArray): MutableMap<String, String> {
         val nameMap = mutableMapOf("FFFFFFFF" to "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
@@ -9,7 +7,7 @@ class NameList {
             bytes
         } // byte array
         val fileString = file.toHexString()
-        var nameChunk = "4e414d45" //beginning of NAME chunk so that when it gets stapled to the sub-chunk it's a whole chunk
+        val nameMagic = "454d414e"
         var chunkOffset = 128
         var chunkTypeBytes: String
         var chunkType: String
@@ -42,20 +40,43 @@ class NameList {
                 var lengthLabel: Int
                 var stringLength: Int
                 var label: String
-                var remainingChunk = inputChunk.substring(32,length)
-                val startIndex = 10
-                while (remainingChunk.length > 10) {
-                    lengthLabel = remainingChunk.substring(8,10).hexToInt()
-                    stringLength = lengthLabel.times(2)
+                var remainingChunk = inputChunk.substring(32, length)
+                val magicWord = remainingChunk.substring(16, 24)
+                if (magicWord.equals(nameMagic,ignoreCase = true)) {
+                    remainingChunk = remainingChunk.substring(32)
+                    val startIndex = 8
+                    while (remainingChunk.length > 8) {
+                        id = remainingChunk.take(8)
+                        label = remainingChunk.substring(startIndex).substringBefore("00")
+                        if (label.isEmpty()) {
+                            id = remainingChunk.substring(2,10)
+                            label = remainingChunk.substring(10).substringBefore("00")
+                            if (label.length % 2 != 0) label += "0"
+                        } else {
+                            if (label.length % 2 != 0) label += "0"
+                        }
+                        val labelPlusNullByte = label + "00"
+                        remainingChunk = remainingChunk.substringAfter(labelPlusNullByte)
 
-                    id = remainingChunk.take(8)
-                    label = remainingChunk.substring(startIndex,startIndex + stringLength)
+                        println("ID: $id LABEL: ${label.hexToByteArray().decodeToString()}")
 
-                    println("ID: $id LENGTH: $lengthLabel LABEL: ${label.hexToByteArray().decodeToString()}")
+                        nameMap[id] = label
+                    }
+                } else {
+                    val startIndex = 10
+                    while (remainingChunk.length > 10) {
+                        lengthLabel = remainingChunk.substring(8, 10).hexToInt()
+                        stringLength = lengthLabel.times(2)
 
-                    nameMap[id] = label
-                    remainingChunk = remainingChunk.substringAfter(label)
-                    //Thread.sleep(20000)
+                        id = remainingChunk.take(8)
+                        label = remainingChunk.substring(startIndex, startIndex + stringLength)
+
+                        println("ID: $id LENGTH: $lengthLabel LABEL: ${label.hexToByteArray().decodeToString()}")
+
+                        nameMap[id] = label
+                        remainingChunk = remainingChunk.substringAfter(label)
+                        //Thread.sleep(20000)
+                    }
                 }
             }
             try {
@@ -66,8 +87,5 @@ class NameList {
             }
         }
         return nameMap
-    }
-    fun findLabelInList(label: String) {
-
     }
 }
