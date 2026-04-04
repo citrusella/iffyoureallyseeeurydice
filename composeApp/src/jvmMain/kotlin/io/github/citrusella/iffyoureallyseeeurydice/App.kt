@@ -389,7 +389,7 @@ fun App() {
                                             } else {
                                                 chunkName // if label errored, leave as chunkName
                                             }
-                                            labelBytes = nameList[outputNameIdFlipped]!!
+                                            labelBytes = nameList[outputNameIdFlipped] ?: nameError
                                         }
                                     }
                                     println("$outputNameId $outputLabelPrefix")
