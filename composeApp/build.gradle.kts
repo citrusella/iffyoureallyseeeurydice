@@ -41,7 +41,7 @@ compose.desktop {
         mainClass = "io.github.citrusella.iffyoureallyseeeurydice.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe, TargetFormat.AppImage)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe, TargetFormat.Rpm)
             packageName = "IFFYouReallySeeEurydice"
             packageVersion = "2.0.0"
             description = "A simple tool for converting 1.0 version Sims iff files to 2.0"
@@ -53,6 +53,7 @@ compose.desktop {
             }
             linux {
                 iconFile.set(File("icons/eurydice icon.png"))
+                modules("jdk.security.auth")
             }
             macOS {
                 iconFile.set(File("icons/eurydice icon multi.icns"))
