@@ -54,6 +54,7 @@ compose.desktop {
             linux {
                 iconFile.set(File("icons/eurydice icon.png"))
                 modules("jdk.security.auth")
+                menuGroup = "Programming"
             }
             macOS {
                 iconFile.set(File("icons/eurydice icon multi.icns"))

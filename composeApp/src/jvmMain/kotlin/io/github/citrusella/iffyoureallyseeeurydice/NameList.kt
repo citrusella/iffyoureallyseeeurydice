@@ -41,7 +41,11 @@ class NameList {
                 var stringLength: Int
                 var label: String
                 var remainingChunk = inputChunk.substring(32, length)
-                val magicWord = remainingChunk.substring(16, 24)
+                val magicWord = try {
+                    remainingChunk.substring(16, 24)
+                } catch (_: Exception) {
+                    "false"
+                }
                 if (magicWord.equals(nameMagic,ignoreCase = true)) {
                     remainingChunk = remainingChunk.substring(32)
                     val startIndex = 8
